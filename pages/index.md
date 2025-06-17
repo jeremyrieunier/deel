@@ -17,7 +17,7 @@ This analysis reveals the problem is concentrated in specific services (IC) and 
 ## Key Findings
 **The IC (Individual Contractor) service drives 93% of all churn**, with rates increasing from 0.33% to 0.63%. Meanwhile, EOR (Employer of Record) maintains perfect 0% churn, indicating the issue affects discretionary contractor spending rather than essential employee payroll services.
 
-**93% of churn originates from AMS and EMEA regions**, with both regions converging at 0.26% churn in December 2023. APAC and other regions remain largely unaffected, suggesting economic factors specific to US/European markets.
+**90% of churn originates from AMS and EMEA regions**, with both regions converging at 0.26% churn in December 2023. APAC and other regions remain largely unaffected, suggesting economic factors specific to US/European markets.
 
 Beyond customer loss, **existing customers are barely expanding (100.68% NRR in December)**, indicating companies are both leaving and reducing spend simultaneously
 
@@ -39,6 +39,7 @@ Deel's monthly churn rate has steadily increased from August to December 2023, d
     x=month
     y=churn_rate
     yFmt=pct2
+    chartAreaHeight=300
 />
 
 <DataTable data={churn} >
@@ -119,13 +120,14 @@ SELECT *
 FROM ${churn_service}
 WHERE service_name = 'IC'
 ```
-IC (Individual Contributor) churn rate increased every month except November (slight plateau):
+IC churn rate increased every month except November (slight plateau):
 
 <LineChart 
     data={ic_churn}
     x=month
     y=churn_rate
     yFmt=pct2
+    chartAreaHeight=300
 />
 
 <DataTable data={ic_churn} >
@@ -203,12 +205,13 @@ SELECT
   region,
   SUM(churned_customers) AS total_churned_customers,
   ROUND(SUM(churned_customers) / SUM(SUM(churned_customers)) OVER (), 4) AS percentage_of_total
-FROM ${churn_region} 
+FROM ${churn_region}
+WHERE region IS NOT NULL
 GROUP BY region
 ORDER BY total_churned_customers DESC
 ```
 
-93% of churn occurs in AMS and EMEA regions:
+90% of churn occurs in AMS and EMEA regions:
 
 <BarChart 
     data={region_churn}
@@ -217,8 +220,8 @@ ORDER BY total_churned_customers DESC
     chartAreaHeight=350
 />
 
-- AMS region dominates churn impact with 74 total churned customers (60% of all churn)
-- EMEA accounts for 41 churned customers (33%)
+- AMS region dominates churn impact with 74 total churned customers (58% of all churn)
+- EMEA accounts for 41 churned customers (32%)
 - Other regions (APAC, BRAZIL) show minimal churn impact
 
 
@@ -228,13 +231,14 @@ FROM ${churn_region}
 WHERE region IN ('AMS', 'EMEA')
 ```
 
-Both primary regions show concerning Q4 deterioration with the churn rate:
+Both primary regions show concerning Q4 deterioration of the churn rate:
 <LineChart 
     data={ams_emea_churn}
     x=month
     y=churn_rate
     series=region
     yFmt=pct2
+    chartAreaHeight=300
 />
 
 The convergence of both regions suggests common external factors (economic conditions, competitive pressure) affecting Western markets simultaneously, while other regions remain largely unaffected.
@@ -300,7 +304,7 @@ Deel maintains healthy revenue expansion from existing customers (>100% NRR) but
     yFmt=pct2
     yMax=1.04
     yMin=0.96
-    chartAreaHeight=350
+    chartAreaHeight=300
 />
 
 
@@ -359,7 +363,7 @@ Both major business units (Contractor and EOR) show expansion, but with differen
     yMax=1.08
     yMin=0.96
     series=business_unit
-    chartAreaHeight=350
+    chartAreaHeight=300
 />
 
 - The Contractor business unit is volatile. Exceptional August (107%), near-flat September (100.84%), then stabilized around 102.5%:
@@ -421,7 +425,7 @@ ORDER BY month, business_unit
 </Details>
 
 ## Regional NRR Patterns
-Despite being the largest region, AMS (Americas) performances are on the decline with a barely positive expansion:
+Despite being the largest region, AMS performances are on the decline with a barely positive expansion:
 
 ```sql nrr_ams
 SELECT *
@@ -435,7 +439,7 @@ WHERE region = 'AMS'
     yFmt=pct2
     yMax=1.06
     yMin=0.96
-    chartAreaHeight=350
+    chartAreaHeight=300
 />
 
 This trend is also presents in the EMEA region, with a gradual decline:
@@ -452,7 +456,7 @@ WHERE region = 'EMEA'
     yFmt=pct2
     yMax=1.06
     yMin=0.96
-    chartAreaHeight=350
+    chartAreaHeight=300
 />
 
 On the other hand, APAC is the only region with accelerating expansion:
@@ -469,7 +473,7 @@ WHERE region = 'APAC'
     yFmt=pct2
     yMax=1.06
     yMin=0.96
-    chartAreaHeight=350
+    chartAreaHeight=300
 />
 
 <Details title="SQL query used for the Region NRR analysis">
@@ -542,9 +546,9 @@ Economic conditions in Q4 2023 (rising interest rates, budget tightening, recess
 
 ## Supporting Evidence
 ### Geographic Concentration:
-- 93% of churn concentrated in AMS and EMEA regions (Western markets)
-- AMS: 74 churned customers (60% of total churn)
-- EMEA: 41 churned customers (33% of total churn)
+- 90% of churn concentrated in AMS and EMEA regions (Western markets)
+- AMS: 74 churned customers (58% of total churn)
+- EMEA: 41 churned customers (32% of total churn)
 - APAC/BRAZIL: Minimal churn impact suggests economic factors are region-specific
 
 ### Service-Specific Impact:
