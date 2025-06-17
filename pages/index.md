@@ -580,6 +580,11 @@ The following data points would enhance the analysis:
 - VC funding, layoffs and corporate hiring freezes
 
 ## Hypothesis Validation Methods
+### Economic Correlation
+- Map churn spikes to economic events (Fed rate, unemployment reports, GDP data)
+- Regional economic comparison: AMS/EMEA vs APAC economic indicators during 2023
+- Time-series analysis to identify lag between economic announcements and churn increases
+
 ### Customer Feedback
 - Send a survey to churned customers asking specific decision factors
 - Send a survey or do interviews with contract-reducing customers
@@ -590,7 +595,7 @@ The following data points would enhance the analysis:
 - Analysis of usage pattern changes (ie: reduced activity preceding churn)
 
 ### Contract Reduction
-- Test if customers who reduce contracts in month N churn in month N+1 or N+2
+- See if customers who reduce contracts in month N churn in month N+1 or N+2
 - Compare contraction-to-churn ratios across economic vs. stable periods
 - Define an early warning system (ie: customers reducing contracts > 20%)
 
